@@ -1,5 +1,4 @@
 "use client" 
-
 import {
     ImageKitAbortError,
     ImageKitInvalidRequestError,
@@ -21,57 +20,53 @@ const FileUpload = () => {
     const abortController = new AbortController();
 
     /**
-     * Authenticates and retrieves the necessary upload credentials from the server.
-     *
-     * This function calls the authentication API endpoint to receive upload parameters like signature,
-     * expire time, token, and publicKey.
-     *
-     * @returns {Promise<{signature: string, expire: string, token: string, publicKey: string}>} The authentication parameters.
-     * @throws {Error} Throws an error if the authentication request fails.
+   
+     * @returns {Promise<{signature: string, expire: string, token: string, publicKey: string}>} 
+     * @throws {Error} 
      */
     const authenticator = async () => {
         try {
-            // Perform the request to the upload authentication endpoint.
             const response = await fetch("/api/upload-auth");
             if (!response.ok) {
-                // If the server response is not successful, extract the error text for debugging.
                 const errorText = await response.text();
                 throw new Error(`Request failed with status ${response.status}: ${errorText}`);
             }
 
-            // Parse and destructure the response JSON for upload credentials.
             const data = await response.json();
             const { signature, expire, token, publicKey } = data;
             return { signature, expire, token, publicKey };
         } catch (error) {
-            // Log the original error for debugging before rethrowing a new error.
             console.error("Authentication error:", error);
             throw new Error("Authentication request failed");
         }
     };
 
-    /**
-     * Handles the file upload process.
-     *
-     * This function:
-     * - Validates file selection.
-     * - Retrieves upload authentication credentials.
-     * - Initiates the file upload via the ImageKit SDK.
-     * - Updates the upload progress.
-     * - Catches and processes errors accordingly.
-     */
+
+    const validateFile = (file: File) => {
+        const allowedTypes = ["image/jpeg", "image/png", "image/gif", "video/mp4", "image/webp", "image/avif", "image/jpg"];
+        const maxSizeInBytes = 100 * 1024 * 1024; // 100MB
+        if (!allowedTypes.includes(file.type)) {
+            setError("Invalid file type. Only JPEG, PNG, GIF, MP4, WEBP, AVIF, and JPG are allowed.");
+            throw new Error("Invalid file type. Only JPEG, PNG, GIF, MP4, WEBP, AVIF, and JPG are allowed.");
+        }
+        if (file.size > maxSizeInBytes) {
+            setError("File size exceeds the 100MB limit.");
+            throw new Error("File size exceeds the 100MB limit.");
+        }
+    }
+
     const handleUpload = async () => {
-        // Access the file input element using the ref
         const fileInput = fileInputRef.current;
+        
+        
         if (!fileInput || !fileInput.files || fileInput.files.length === 0 ) {
             alert("Please select a file to upload");
             return;
         }
+    
 
-        // Extract the first file from the file input
         const file = fileInput.files[0];
 
-        // Retrieve authentication parameters for the upload.
         let authParams;
         try {
             authParams = await authenticator();
@@ -81,10 +76,9 @@ const FileUpload = () => {
         }
         const { signature, expire, token, publicKey } = authParams;
 
-        // Call the ImageKit SDK upload function with the required parameters and callbacks.
         try {
+            setIsUploading(true);
             const uploadResponse = await upload({
-                // Authentication parameters
                 expire,
                 token,
                 signature,
@@ -95,43 +89,61 @@ const FileUpload = () => {
                 onProgress: (event) => {
                     setProgress((event.loaded / event.total) * 100);
                 },
-                // Abort signal to allow cancellation of the upload if needed.
                 abortSignal: abortController.signal,
             });
             console.log("Upload response:", uploadResponse);
+            setIsUploading(false);
         } catch (error) {
-            // Handle specific error types provided by the ImageKit SDK.
             if (error instanceof ImageKitAbortError) {
+                setIsUploading(false);
                 setError("Upload was aborted by the user.");
             } else if (error instanceof ImageKitInvalidRequestError) {
+                setIsUploading(false);
                 setError("Invalid request.");
             } else if (error instanceof ImageKitUploadNetworkError) {
+                setIsUploading(false);
                 setError("Network error.");
             } else if (error instanceof ImageKitServerError) {
                 setError("Server error.");
+                setIsUploading(false);
             } else {
-                // Handle any other errors that may occur.
                 setError("An unexpected error occurred during upload.");
+                setIsUploading(false);
             }
         }
     };
 
     return (
-        <div>
-            {/* File input element using React ref */}
+        <div className="space-y-3">
             <input type="file" className="px-3 py-2 bg-blue-400" ref={fileInputRef} />
-            {/* Button to trigger the upload process */}
-            <button className="px-3 py-2 rounded-xl bg-blue-400" type="button" onClick={handleUpload}>
+            <button className="px-3 py-2 rounded-xl bg-blue-400" disabled={isUploading} type="button" onClick={
+                () => {
+                    try {
+                        const file = fileInputRef?.current?.files?.[0];
+                        if (!file) {
+                            setError("Please select a file to upload");
+                            return;
+                        }
+                        validateFile(file);
+                        handleUpload();
+                    } catch (error) {
+                        console.error("Validation error:", error);
+                    }
+                }}>
                 Upload file
             </button>
-            <button className="px-3 py-2 rounded-xl bg-red-400" type="button" onClick={() => abortController.abort()}>
+            <button className="px-3 py-2 rounded-xl bg-red-400" type="button" onClick={() => abortController.abort()} disabled={!isUploading}>
                 Cancel Upload
             </button>
             <br />
-            {/* Display the current upload progress */}
-            <span>Upload Progress: { progress == 100 ? "Completed" : progress.toFixed(2) + "%" }</span>
-            {/* Show a loading spinner if the upload is in progress */}
-            {progress > 0 && progress < 100 && <Loader2 className="animate-spin" />}
+            {isUploading && (
+                <div className="flex items-center space-x-2">
+                    <Loader2 className="animate-spin" />
+                    <span>Uploading... {progress.toFixed(2)}%</span>
+                </div>
+            )}
+            {error && <div className="text-red-500">{error}</div>
+            }
 
         </div>
     );
