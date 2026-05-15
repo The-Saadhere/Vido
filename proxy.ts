@@ -13,8 +13,9 @@ return NextResponse.next();
                     pathname.startsWith("/api/auth") ||
                     pathname.startsWith("/signIn") ||
                     pathname.startsWith("/signUp")
-                    || pathname.startsWith("/upload")
-                    || pathname.startsWith("/api/upload-auth")
+                    || pathname.startsWith("/upload-video")
+                    || pathname.startsWith("/api/upload-auth") ||
+                     pathname.startsWith("/api/videos")
                 ){
                     return true;
                 }

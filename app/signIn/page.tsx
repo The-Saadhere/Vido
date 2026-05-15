@@ -11,24 +11,32 @@ const Login = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-const handleLogin = async ()=>{
-try {
-  setLoading(true)
-  const res = await signIn ("credentials", {
-    email,
-    password,
-    redirect: false
-  })
-  if (res?.error) {
-    setError(res.error)
+const handleLogin = async () => {
+  try {
+    setLoading(true);
+    setError("");
+
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (res?.error) {
+      setError("Invalid email or password");
+      setLoading(false);
+      return;
+    }
+
+    // successful login
+    router.push("/");
+
+  } catch (error) {
+    setError("An error occurred while signing in");
+  } finally {
+    setLoading(false);
   }
-  setLoading(false)
-  router.push("/")
-} catch (error) {
-  setLoading(false)
-  setError("An error occurred while signing in")
-}
-}
+};
 if (session) {
   router.push("/")
 }
