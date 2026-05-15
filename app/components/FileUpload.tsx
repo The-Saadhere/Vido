@@ -8,6 +8,7 @@ import {
 } from "@imagekit/next";
 import { useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
+import { apiClient } from "@/lib/api-client";
 
 
 const FileUpload = () => {
@@ -41,13 +42,23 @@ const FileUpload = () => {
         }
     };
 
+    const uploadToBackend = async (uploadResponse: any) => {
+
+
+    //   const videoData =await apiClient.createVideo({
+    //   })
+    // #TODO
+    console.log("Data:", uploadResponse);
+    }
+
 
     const validateFile = (file: File) => {
-        const allowedTypes = ["image/jpeg", "image/png", "image/gif", "video/mp4", "image/webp", "image/avif", "image/jpg"];
+        // only video alloewed 
+        const allowedTypes = [ "video/mp4", "video/webm", "video/ogg", "video/avi", "video/mpeg", "video/quicktime", "video/x-ms-wmv", "video/x-flv"];
         const maxSizeInBytes = 100 * 1024 * 1024; // 100MB
         if (!allowedTypes.includes(file.type)) {
-            setError("Invalid file type. Only JPEG, PNG, GIF, MP4, WEBP, AVIF, and JPG are allowed.");
-            throw new Error("Invalid file type. Only JPEG, PNG, GIF, MP4, WEBP, AVIF, and JPG are allowed.");
+            setError("Invalid file type. Only MP4 videos are allowed.");
+            throw new Error("Invalid file type. Only MP4 videos are allowed.");
         }
         if (file.size > maxSizeInBytes) {
             setError("File size exceeds the 100MB limit.");
@@ -91,7 +102,10 @@ const FileUpload = () => {
                 },
                 abortSignal: abortController.signal,
             });
-            console.log("Upload response:", uploadResponse);
+            if (uploadResponse) {
+                console.log("Upload successful:", uploadResponse);
+                uploadToBackend(uploadResponse);
+            }
             setIsUploading(false);
         } catch (error) {
             if (error instanceof ImageKitAbortError) {
