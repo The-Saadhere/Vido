@@ -53,7 +53,7 @@ const Header = () => {
         <div className="flex items-center gap-2">
           {session ? (
             <>
-              <Link href="/upload">
+              <Link href="/upload-video">
                 <button className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-white/70 hover:text-white bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.08] rounded-lg h-8 px-3 transition-all">
                   <Upload className="w-3.5 h-3.5" />
                   Upload
@@ -95,7 +95,7 @@ const Header = () => {
           <Link href="/" onClick={() => setMenuOpen(false)} className="text-sm text-white/70 hover:text-white py-2 px-3 rounded-lg hover:bg-white/[0.06] transition-all">
             Home
           </Link>
-          <Link href="/upload" onClick={() => setMenuOpen(false)} className="text-sm text-white/70 hover:text-white py-2 px-3 rounded-lg hover:bg-white/[0.06] transition-all flex items-center gap-2">
+          <Link href="/upload-video" onClick={() => setMenuOpen(false)} className="text-sm text-white/70 hover:text-white py-2 px-3 rounded-lg hover:bg-white/[0.06] transition-all flex items-center gap-2">
             <Upload className="w-3.5 h-3.5" /> Upload
           </Link>
           {session && (
