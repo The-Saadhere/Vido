@@ -17,6 +17,9 @@ Vido is a modern video-sharing platform inspired by YouTube, where users can upl
 
 ## 🛠️ Tech Stack
 
+### Video Handling
+- Imagekit
+
 ### Frontend
 - React.js / Next.js
 - Tailwind CSS
@@ -35,7 +38,7 @@ Vido is a modern video-sharing platform inspired by YouTube, where users can upl
 
 ## 📸 Screenshots
 
-_Add screenshots or demo images here._
+
 <img width="1352" height="609" alt="image" src="https://github.com/user-attachments/assets/3a13bcae-a6c3-4649-974d-cfa03f8d37a3" />
 
 ---
