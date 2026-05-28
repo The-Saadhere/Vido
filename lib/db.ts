@@ -19,7 +19,8 @@ export async function connectToDatabase() {
     if(!cached.promise){
         const opts = {
             bufferCommands: true,
-            maxPoolSize: 10
+            maxPoolSize: 10,
+            family: 4
         };
         cached.promise = mongoose.connect(MONGODB_URI, opts).then(()=>mongoose.connection)
     }
@@ -28,7 +29,7 @@ export async function connectToDatabase() {
 
     } catch (error) {
         cached.promise = null;
-        throw new Error('Failed to connect to database');
+        throw new Error("Internal Error in db Connection");
     }
     return cached.conn;
 }
