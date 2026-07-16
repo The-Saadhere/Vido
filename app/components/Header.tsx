@@ -1,37 +1,42 @@
 "use client"
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Menu, X, Upload } from 'lucide-react'
 import Image from 'next/image'
 
 const Header = () => {
   const { data: session } = useSession()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [showSignInPrompt, setShowSignInPrompt] = useState(false)
+
+  useEffect(() => {
+    if (!showSignInPrompt) return;
+    const t = setTimeout(() => setShowSignInPrompt(false), 3000);
+    return () => clearTimeout(t);
+  }, [showSignInPrompt]);
 
   const handleSignOut = async () => {
     try { await signOut() } catch {}
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 h-14">
-      {/* Glass bar */}
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-md border-b border-white/[0.06]" />
+    <header className="fixed top-0 left-0 right-0 z-50 h-16">
+      <div className="absolute inset-0 bg-[#fafafa]/80 backdrop-blur-xl border-b border-[#e8e8e8]" />
 
-      <div className="relative h-full flex items-center justify-between px-4 sm:px-6 max-w-screen-xl mx-auto">
+      <div className="relative h-full flex items-center justify-between px-5 sm:px-8 max-w-[1200px] mx-auto">
 
-        {/* Left */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-white/50 hover:text-white hover:bg-white/[0.08] transition-all"
+            className="w-9 h-9 flex items-center justify-center rounded-full text-[#999] hover:text-[#111] hover:bg-[#f0f0f0] transition-all duration-200"
             aria-label="Toggle menu"
           >
             {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
 
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="relative w-7 h-7 rounded-lg overflow-hidden ring-1 ring-white/10 group-hover:ring-white/20 transition-all">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="relative w-8 h-8 rounded-xl overflow-hidden shadow-sm">
               <Image
                 src="https://ik.imagekit.io/saadkamal/logo_nbSjlUO1b.png"
                 alt="vido logo"
@@ -40,33 +45,29 @@ const Header = () => {
                 priority
               />
             </div>
-            <span
-              className="text-white font-black text-lg tracking-tighter"
-              style={{ fontFamily: "'Syne', sans-serif", letterSpacing: '-0.04em' }}
-            >
+            <span className="text-[#111] font-semibold text-lg tracking-tight">
               vido
             </span>
           </Link>
         </div>
 
-        {/* Right */}
         <div className="flex items-center gap-2">
           {session ? (
             <>
               <Link href="/upload-video">
-                <button className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-white/70 hover:text-white bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.08] rounded-lg h-8 px-3 transition-all">
-                  <Upload className="w-3.5 h-3.5" />
+                <button className="hidden sm:flex items-center gap-2 text-sm font-medium text-[#666] hover:text-[#111] hover:bg-[#f0f0f0] rounded-full h-9 px-4 transition-all duration-200">
+                  <Upload className="w-4 h-4" />
                   Upload
                 </button>
               </Link>
 
-              <div className="flex items-center gap-2 pl-1">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-[11px] font-bold text-white ring-1 ring-white/10">
+              <div className="flex items-center gap-3 pl-2">
+                <div className="w-8 h-8 rounded-full bg-[#111] flex items-center justify-center text-xs font-medium text-white">
                   {session.user?.name?.[0]?.toUpperCase() ?? 'U'}
                 </div>
                 <button
                   onClick={handleSignOut}
-                  className="text-xs font-medium text-white/40 hover:text-white/80 transition-colors hidden sm:block"
+                  className="text-sm font-medium text-[#999] hover:text-[#111] transition-colors duration-200 hidden sm:block"
                 >
                   Sign out
                 </button>
@@ -74,14 +75,21 @@ const Header = () => {
             </>
           ) : (
             <>
+              <button
+                onClick={() => setShowSignInPrompt(true)}
+                className="hidden sm:flex items-center gap-2 text-sm font-medium text-[#666] hover:text-[#111] hover:bg-[#f0f0f0] rounded-full h-9 px-4 transition-all duration-200"
+              >
+                <Upload className="w-4 h-4" />
+                Upload
+              </button>
               <Link href="/signIn">
-                <button className="h-8 px-3 rounded-lg text-xs font-semibold text-white/60 hover:text-white hover:bg-white/[0.06] transition-all">
+                <button className="h-9 px-4 rounded-full text-sm font-medium text-[#666] hover:text-[#111] hover:bg-[#f0f0f0] transition-all duration-200">
                   Sign in
                 </button>
               </Link>
               <Link href="/signUp">
-                <button className="h-8 px-4 rounded-lg text-xs font-bold bg-white text-black hover:bg-white/90 transition-all">
-                  Sign up
+                <button className="h-9 px-5 rounded-full text-sm font-medium bg-[#111] text-white hover:bg-[#333] transition-all duration-200">
+                  Get started
                 </button>
               </Link>
             </>
@@ -89,17 +97,24 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile dropdown */}
+      {showSignInPrompt && (
+        <div className="fixed top-20 right-6 z-50">
+          <div className="rounded-lg bg-white border border-[#e8e8e8] px-4 py-2 shadow-md text-sm text-[#111]">
+            Please sign in to upload videos.
+          </div>
+        </div>
+      )}
+
       {menuOpen && (
-        <div className="absolute top-14 left-0 right-0 bg-black/95 backdrop-blur-md border-b border-white/[0.06] py-3 px-4 flex flex-col gap-1 sm:hidden">
-          <Link href="/" onClick={() => setMenuOpen(false)} className="text-sm text-white/70 hover:text-white py-2 px-3 rounded-lg hover:bg-white/[0.06] transition-all">
+        <div className="absolute top-16 left-0 right-0 bg-[#fafafa]/95 backdrop-blur-xl border-b border-[#e8e8e8] py-3 px-5 flex flex-col gap-1 sm:hidden">
+          <Link href="/" onClick={() => setMenuOpen(false)} className="text-sm text-[#666] hover:text-[#111] py-2.5 px-4 rounded-xl hover:bg-[#f0f0f0] transition-all duration-200">
             Home
           </Link>
-          <Link href="/upload-video" onClick={() => setMenuOpen(false)} className="text-sm text-white/70 hover:text-white py-2 px-3 rounded-lg hover:bg-white/[0.06] transition-all flex items-center gap-2">
-            <Upload className="w-3.5 h-3.5" /> Upload
+          <Link href="/upload-video" onClick={() => setMenuOpen(false)} className="text-sm text-[#666] hover:text-[#111] py-2.5 px-4 rounded-xl hover:bg-[#f0f0f0] transition-all duration-200 flex items-center gap-2">
+            <Upload className="w-4 h-4" /> Upload
           </Link>
           {session && (
-            <button onClick={handleSignOut} className="text-left text-sm text-white/40 hover:text-white py-2 px-3 rounded-lg hover:bg-white/[0.06] transition-all">
+            <button onClick={handleSignOut} className="text-left text-sm text-[#999] hover:text-[#111] py-2.5 px-4 rounded-xl hover:bg-[#f0f0f0] transition-all duration-200">
               Sign out
             </button>
           )}

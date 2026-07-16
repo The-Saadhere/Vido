@@ -1,6 +1,28 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: light, dark, cupcake;
+  themes: light;
 }
 
+@layer base {
+  :root {
+    --color-surface: #ffffff;
+    --color-background: #fafafa;
+    --color-border: #e8e8e8;
+    --color-border-subtle: #f0f0f0;
+    --color-text-primary: #111111;
+    --color-text-secondary: #666666;
+    --color-text-muted: #999999;
+    --color-accent: #111111;
+    --color-accent-hover: #333333;
+  }
 
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #111111;
+    color: #ffffff;
+  }
+}

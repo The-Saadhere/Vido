@@ -25,7 +25,7 @@ export async function POST(request: Request){
         }
         await connectToDatabase();
         const body: IVideo = await request.json();
-        if(!body.title || !body.description || !body.videoUrl || !body.thumbnailUrl){
+        if(!body.title || !body.description || !body.videoUrl || !body.thumbnailUrl || !body.email){
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }const videoData: IVideo ={
             ...body,

@@ -35,47 +35,28 @@ const Login = () => {
   }
 
   return (
-    <div
-      className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4 pt-14"
-      style={{ fontFamily: "'Syne', sans-serif" }}
-    >
-      {/* Subtle grid */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-[0.025]"
-        style={{
-          backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
-        }}
-      />
+    <div className="min-h-screen bg-[#fafafa] flex items-center justify-center px-5 pt-16">
+      <div className="relative w-full max-w-[380px]">
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-64 h-64 bg-[#111]/[0.02] rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative w-full max-w-sm">
-        {/* Glow */}
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-48 h-48 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-
-        {/* Brand */}
-        <div className="mb-8 text-center">
+        <div className="mb-10 text-center">
           <Link href="/">
-            <span
-              className="text-white font-black text-3xl tracking-tighter"
-              style={{ letterSpacing: "-0.05em" }}
-            >
+            <span className="text-[#111] font-semibold text-3xl tracking-tight">
               vido
             </span>
           </Link>
-          <p className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold mt-2">
+          <p className="text-xs text-[#999] mt-3 tracking-wide">
             Welcome back
           </p>
         </div>
 
-        {/* Card */}
-        <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-6 backdrop-blur-sm">
-          <div className="flex flex-col gap-4">
+        <div className="bg-white rounded-3xl p-8 shadow-[0_0_0_1px_#e8e8e8,0_2px_8px_rgba(0,0,0,0.04)]">
+          <div className="flex flex-col gap-5">
 
-            {/* Email */}
             <div>
               <label
                 htmlFor="email"
-                className="block text-[10px] font-semibold uppercase tracking-widest text-white/30 mb-1.5"
+                className="block text-xs font-medium text-[#666] mb-2"
               >
                 Email
               </label>
@@ -86,20 +67,19 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 focus:bg-white/[0.07] transition-all"
+                className="w-full bg-[#fafafa] border border-[#e8e8e8] rounded-xl px-4 py-3 text-sm text-[#111] placeholder:text-[#bbb] focus:outline-none focus:border-[#999] focus:bg-white transition-all duration-200"
               />
             </div>
 
-            {/* Password */}
             <div>
-              <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center justify-between mb-2">
                 <label
                   htmlFor="password"
-                  className="block text-[10px] font-semibold uppercase tracking-widest text-white/30"
+                  className="block text-xs font-medium text-[#666]"
                 >
                   Password
                 </label>
-                <button className="text-[10px] text-white/25 hover:text-white/60 transition-colors font-mono">
+                <button className="text-xs text-[#999] hover:text-[#666] transition-colors duration-200">
                   Forgot password?
                 </button>
               </div>
@@ -111,34 +91,32 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                  className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 pr-10 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 focus:bg-white/[0.07] transition-all"
+                  className="w-full bg-[#fafafa] border border-[#e8e8e8] rounded-xl px-4 py-3 pr-11 text-sm text-[#111] placeholder:text-[#bbb] focus:outline-none focus:border-[#999] focus:bg-white transition-all duration-200"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPw(!showPw)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/60 transition-colors"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#bbb] hover:text-[#666] transition-colors duration-200"
                 >
                   {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            {/* Error */}
             {error && (
-              <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl px-3 py-2.5">
-                <AlertCircle className="w-3.5 h-3.5 text-red-400 flex-shrink-0" />
-                <p className="text-xs text-red-400 font-mono">{error}</p>
+              <div className="flex items-center gap-2.5 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
+                <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                <p className="text-xs text-red-500">{error}</p>
               </div>
             )}
 
-            {/* Submit */}
             <button
               onClick={handleLogin}
               disabled={loading}
-              className="w-full mt-1 flex items-center justify-center gap-2 bg-white text-black font-bold text-sm py-2.5 rounded-xl hover:bg-white/90 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="w-full mt-1 flex items-center justify-center gap-2 bg-[#111] text-white font-medium text-sm py-3 rounded-xl hover:bg-[#333] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
             >
               {loading ? (
-                <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
                   Sign in
@@ -150,10 +128,9 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Footer */}
-        <p className="text-center text-xs text-white/25 mt-6">
+        <p className="text-center text-xs text-[#999] mt-8">
           Don&apos;t have an account?{" "}
-          <Link href="/signUp" className="text-white/60 hover:text-white transition-colors font-semibold">
+          <Link href="/signUp" className="text-[#111] hover:text-[#333] transition-colors duration-200 font-medium">
             Sign up
           </Link>
         </p>

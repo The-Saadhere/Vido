@@ -40,6 +40,8 @@ export const authOptions: NextAuthOptions = {
         async jwt ({token, user}){
             if(user){
                 token.id = user.id;
+                // preserve email on the token so it can be exposed in the session
+                if ((user as any).email) token.email = (user as any).email;
             }
             return token;
         },
@@ -47,7 +49,8 @@ export const authOptions: NextAuthOptions = {
             if(token.id){
                 session.user.id = token.id as string;
             }
-            
+            // expose email from token to session
+            if ((token as any).email) session.user.email = (token as any).email as string;
             return session;
         }
     },

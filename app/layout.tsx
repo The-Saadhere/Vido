@@ -1,22 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ProviderWrapper from "./components/ProviderWrapper";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Vido - A video player built with Next.js and React",
-  description: "A simple video player built with Next.js and React",
+  title: "Vido",
+  description: "Upload, share, and watch videos.",
 };
 
 export default function RootLayout({
@@ -25,10 +22,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="light">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+        className={`${inter.variable} font-sans antialiased bg-[#fafafa] text-[#111]`}
+      >
         <ProviderWrapper>
           <Header />
           {children}

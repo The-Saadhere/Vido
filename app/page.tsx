@@ -28,98 +28,75 @@ export default function Home() {
 
   return (
     <ImageKitProvider urlEndpoint={IMAGEKIT_URL}>
-      <div
-        className="min-h-screen bg-[#0a0a0a] text-white pt-14"
-        style={{ fontFamily: "'Syne', sans-serif" }}
-      >
-        {/* Grid bg */}
-        <div
-          className="fixed inset-0 pointer-events-none opacity-[0.025]"
-          style={{
-            backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
+      <div className="min-h-screen bg-[#fafafa] pt-16">
+        <div className="max-w-[1200px] mx-auto px-5 sm:px-8 py-12">
 
-        <div className="relative max-w-screen-xl mx-auto px-4 sm:px-6 py-10">
-
-          {/* Page header */}
-          <div className="mb-8">
-            <p className="text-[10px] font-semibold tracking-[0.2em] text-white/30 uppercase mb-2">
+          <div className="mb-10">
+            <p className="text-xs font-medium tracking-wide text-[#999] uppercase mb-3">
               Discover
             </p>
-            <h1
-              className="text-3xl sm:text-4xl font-black tracking-tighter text-white"
-              style={{ letterSpacing: "-0.04em" }}
-            >
+            <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-[#111]">
               Videos
             </h1>
           </div>
 
-          {/* Loading skeletons */}
           {loading && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[...Array(8)].map((_, i) => (
-                <div key={i} className="flex flex-col gap-2">
-                  <div className="aspect-video rounded-xl bg-white/[0.04] animate-pulse" />
-                  <div className="h-3 w-3/4 rounded bg-white/[0.04] animate-pulse" />
-                  <div className="h-3 w-1/2 rounded bg-white/[0.04] animate-pulse" />
+                <div key={i} className="flex flex-col gap-3">
+                  <div className="aspect-video rounded-2xl bg-[#eee] animate-pulse" />
+                  <div className="h-3.5 w-3/4 rounded-full bg-[#eee] animate-pulse" />
+                  <div className="h-3 w-1/2 rounded-full bg-[#eee] animate-pulse" />
                 </div>
               ))}
             </div>
           )}
 
-          {/* Empty */}
           {!loading && videos.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-32 border border-dashed border-white/10 rounded-2xl">
-              <Play className="w-10 h-10 text-white/10 mb-4" />
-              <p className="text-sm text-white/20">No videos yet</p>
+            <div className="flex flex-col items-center justify-center py-32 rounded-3xl bg-white shadow-[0_0_0_1px_#e8e8e8]">
+              <Play className="w-10 h-10 text-[#ccc] mb-4" />
+              <p className="text-sm text-[#999]">No videos yet</p>
             </div>
           )}
 
-          {/* Video grid */}
           {!loading && videos.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {videos.map((video, i) => (
                 <div
                   key={(video as any)._id ?? i}
                   className="group cursor-pointer"
                   onClick={() => setActiveVideo(video)}
                 >
-                  {/* Thumbnail */}
-                  <div className="relative aspect-video rounded-xl overflow-hidden bg-white/[0.04] border border-white/[0.06] group-hover:border-white/20 transition-all">
+                  <div className="relative aspect-video rounded-2xl overflow-hidden bg-[#f0f0f0] shadow-[0_0_0_1px_#e8e8e8] group-hover:shadow-[0_0_0_1px_#d0d0d0,0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-300">
                     {video.thumbnailUrl ? (
                       <Image
                         src={video.thumbnailUrl}
                         alt={video.title ?? "video"}
                         height={400}
                         width={700}
-                        className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity duration-300 group-hover:scale-105"
+                        className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-[1.03]"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <Play className="w-6 h-6 text-white/15" />
+                        <Play className="w-6 h-6 text-[#ccc]" />
                       </div>
                     )}
 
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                    {/* Play button */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
-                      <div className="w-11 h-11 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-200">
-                        <Play className="w-4 h-4 text-white fill-white ml-0.5" />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-300">
+                        <Play className="w-5 h-5 text-white fill-white ml-0.5" />
                       </div>
                     </div>
                   </div>
 
-                  {/* Meta */}
-                  <div className="mt-2.5 px-0.5">
-                    <p className="text-sm font-semibold text-white/90 truncate leading-snug">
+                  <div className="mt-3 px-1">
+                    <p className="text-sm font-medium text-[#111] truncate leading-snug">
                       {video.title ?? "Untitled"}
                     </p>
                     {video.description && (
-                      <p className="text-xs text-white/35 mt-0.5 truncate font-mono">
+                      <p className="text-xs text-[#999] mt-1 truncate">
                         {video.description}
                       </p>
                     )}
@@ -130,26 +107,23 @@ export default function Home() {
           )}
         </div>
 
-        {/* Lightbox modal */}
         {activeVideo && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md px-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4"
             onClick={() => setActiveVideo(null)}
           >
             <div
               className="relative w-full max-w-3xl"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close */}
               <button
                 onClick={() => setActiveVideo(null)}
-                className="absolute -top-10 right-0 flex items-center gap-1.5 text-xs text-white/40 hover:text-white transition-colors"
+                className="absolute -top-12 right-0 w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all duration-200"
               >
-                <X className="w-4 h-4" /> Close
+                <X className="w-4 h-4" />
               </button>
 
-              {/* Video player */}
-              <div className="rounded-2xl overflow-hidden border border-white/[0.08] bg-black aspect-video">
+              <div className="rounded-2xl overflow-hidden bg-black aspect-video shadow-2xl">
                 {activeVideo.videoUrl ? (
                   <Video
                     src={activeVideo.videoUrl}
@@ -164,16 +138,12 @@ export default function Home() {
                 )}
               </div>
 
-              {/* Info */}
-              <div className="mt-4">
-                <h2
-                  className="text-xl font-black text-white tracking-tight"
-                  style={{ letterSpacing: "-0.03em" }}
-                >
+              <div className="mt-5">
+                <h2 className="text-xl font-semibold text-white tracking-tight">
                   {activeVideo.title ?? "Untitled"}
                 </h2>
                 {activeVideo.description && (
-                  <p className="text-sm text-white/40 mt-1 font-mono">
+                  <p className="text-sm text-white/50 mt-1.5">
                     {activeVideo.description}
                   </p>
                 )}
