@@ -249,7 +249,7 @@ const FileUpload = () => {
         {success && (
           <div className="flex items-center gap-2.5 rounded-xl border border-[#e8e8e8] bg-[#fafafa] px-4 py-3">
             <CheckCircle className="w-4 h-4 text-[#111] flex-shrink-0" />
-            <p className="text-xs text-[#666]">Upload complete — file sent to backend.</p>
+            <p className="text-xs text-[#666]">Video is successfuly uploaded Please Refresh Page.</p>
           </div>
         )}
 
