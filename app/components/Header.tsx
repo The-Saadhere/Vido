@@ -35,19 +35,14 @@ const Header = () => {
             {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
 
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="relative w-8 h-8 rounded-xl overflow-hidden shadow-sm">
-              <Image
-                src="https://ik.imagekit.io/saadkamal/logo_nbSjlUO1b.png"
-                alt="vido logo"
-                fill
-                className="object-cover"
-                priority
-              />
+          <Link href="/" className="flex items-center gap-2.5 group" aria-label="Vido home">
+            <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff3d3d] to-[#ff7a18] shadow-sm ring-1 ring-[#f5d1d1] transition-transform duration-200 group-hover:scale-105">
+              <div className="h-0 w-0 border-y-[7px] border-l-[11px] border-y-transparent border-l-white ml-0.5" />
             </div>
-            <span className="text-[#111] font-semibold text-lg tracking-tight">
-              vido
-            </span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-[#111] text-[1.15rem] font-black tracking-[-0.06em]">vido</span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ff5a36]">play</span>
+            </div>
           </Link>
         </div>
 
