@@ -33,6 +33,7 @@ export default function RootLayout({
           src="https://pixel-pin.vercel.app/widget.js"
           data-project="8ma4hCtMnR"
           strategy="afterInteractive"
+          data-api="https://pixelpin.onrender.com/api"
         />
 
         <ProviderWrapper>
