@@ -17,6 +17,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Vido",
   description: "Upload, share, and watch videos.",
+  verification: {
+    google: "tRjrFAT8T2NPSLZ_U6kOfaYn1zL6Zw6nps1YQrSY_c"
+  }
 };
 
 export default function RootLayout({
